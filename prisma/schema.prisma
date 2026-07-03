@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String   @id @default(uuid())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   clerkUserId    String?  @unique
   name           String
   email          String   @unique
@@ -37,8 +37,8 @@ model User {
 }
 
 model Event {
-  id              String   @id @default(uuid())
-  ownerId         String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId         String   @db.ObjectId
   title           String
   slug            String   @unique
   description     String?
@@ -64,8 +64,8 @@ model Event {
 }
 
 model Photo {
-  id             String   @id @default(uuid())
-  eventId        String
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventId        String   @db.ObjectId
   originalUrl    String
   optimizedUrl   String?
   thumbnailUrl   String?
@@ -81,9 +81,9 @@ model Photo {
 }
 
 model FaceEmbedding {
-  id              String   @id @default(uuid())
-  photoId         String
-  eventId         String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  photoId         String   @db.ObjectId
+  eventId         String   @db.ObjectId
   embeddingVector String?  // Store JSON or encoded array
   boundingBox     String?  // Store JSON {x,y,w,h}
   confidence      Float?
@@ -95,8 +95,8 @@ model FaceEmbedding {
 }
 
 model GuestSearch {
-  id              String   @id @default(uuid())
-  eventId         String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  eventId         String   @db.ObjectId
   guestIdentifier String?
   selfieUrl       String
   resultCount     Int      @default(0)
@@ -107,9 +107,9 @@ model GuestSearch {
 }
 
 model MatchedPhoto {
-  id              String   @id @default(uuid())
-  guestSearchId   String
-  photoId         String
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  guestSearchId   String   @db.ObjectId
+  photoId         String   @db.ObjectId
   similarityScore Float
 
   guestSearch     GuestSearch @relation(fields: [guestSearchId], references: [id], onDelete: Cascade)
@@ -117,10 +117,10 @@ model MatchedPhoto {
 }
 
 model ClientApprovalLog {
-  id        String   @id @default(uuid())
-  clientId  String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  clientId  String   @db.ObjectId
   action    String
   notes     String?
-  adminId   String
+  adminId   String   @db.ObjectId
   createdAt DateTime @default(now())
 }
