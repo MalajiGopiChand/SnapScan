@@ -187,7 +187,7 @@ export function EventDetailPage() {
               {activeEvent.photos.map((photo: any) => (
                 <div key={photo.id} className="group relative aspect-square overflow-hidden rounded-xl bg-stone-100 shadow-sm transition-all hover:shadow-md">
                   <img 
-                    src={photo.thumbnailUrl?.startsWith('data:') ? photo.thumbnailUrl : `${API_URL.replace('/api', '')}${photo.thumbnailUrl}`} 
+                    src={photo.thumbnailUrl?.startsWith('data:') ? photo.thumbnailUrl : `${API_BASE}${photo.thumbnailUrl}`} 
                     alt={photo.fileName}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
