@@ -1,0 +1,50 @@
+{
+  "name": "snap-scan",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "server": "node server.js"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "autoprefixer": "^10.5.2",
+    "postcss": "^8.5.16",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1"
+  },
+  "dependencies": {
+    "@clerk/clerk-react": "^5.61.8",
+    "@clerk/clerk-sdk-node": "^4.13.23",
+    "@prisma/client": "^6.19.3",
+    "@prisma/config": "^7.8.0",
+    "@vladmandic/face-api": "^1.7.15",
+    "bcryptjs": "^3.0.3",
+    "canvas": "^3.2.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "framer-motion": "^12.42.2",
+    "helmet": "^8.2.0",
+    "lucide-react": "^1.23.0",
+    "multer": "^2.2.0",
+    "prisma": "^6.19.3",
+    "qrcode": "^1.5.4",
+    "razorpay": "^2.9.6",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
+    "sharp": "^0.35.3",
+    "zustand": "^5.0.14"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}

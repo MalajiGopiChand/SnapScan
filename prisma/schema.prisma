@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String   @id @default(uuid())
+  clerkUserId    String?  @unique
+  name           String
+  email          String   @unique
+  passwordHash   String?
+  role           String   @default("GUEST") // SUPER_ADMIN, PHOTOGRAPHER, GUEST
+  approvalStatus String   @default("PENDING") // APPROVED, PENDING, REJECTED, SUSPENDED
+  
+  // Profile fields
+  studioName     String?
+  phone          String?
+  city           String?
+  state          String?
+  
+  // Subscription fields
+  subscriptionType   String?  @default("NONE") // NONE, MONTHLY, YEARLY, PAY_PER_EVENT
+  subscriptionMethod String?  // RAZORPAY, MANUAL_ADMIN
+  subscriptionStatus String   @default("INACTIVE") // INACTIVE, ACTIVE
+  razorpayCustomerId String?
+  razorpaySubscriptionId String?
+
+  profileImage   String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  events         Event[]
+}
+
+model Event {
+  id              String   @id @default(uuid())
+  ownerId         String
+  title           String
+  slug            String   @unique
+  description     String?
+  coverImageUrl   String?
+  venue           String?
+  city            String?
+  state           String?
+  country         String?
+  eventDate       String?
+  pinCode         String?
+  guestLink       String?
+  qrCodeUrl       String?
+  allowDownloads  Boolean  @default(true)
+  isPublic        Boolean  @default(false)
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  owner           User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  photos          Photo[]
+  faceEmbeddings  FaceEmbedding[]
+  guestSearches   GuestSearch[]
+}
+
+model Photo {
+  id             String   @id @default(uuid())
+  eventId        String
+  originalUrl    String
+  optimizedUrl   String?
+  thumbnailUrl   String?
+  fileName       String
+  width          Int?
+  height         Int?
+  size           Int?
+  uploadedAt     DateTime @default(now())
+
+  event          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  faceEmbeddings FaceEmbedding[]
+  matchedPhotos  MatchedPhoto[]
+}
+
+model FaceEmbedding {
+  id              String   @id @default(uuid())
+  photoId         String
+  eventId         String
+  embeddingVector String?  // Store JSON or encoded array
+  boundingBox     String?  // Store JSON {x,y,w,h}
+  confidence      Float?
+  personIndex     Int?
+  createdAt       DateTime @default(now())
+
+  photo           Photo    @relation(fields: [photoId], references: [id], onDelete: Cascade)
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model GuestSearch {
+  id              String   @id @default(uuid())
+  eventId         String
+  guestIdentifier String?
+  selfieUrl       String
+  resultCount     Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  matchedPhotos   MatchedPhoto[]
+}
+
+model MatchedPhoto {
+  id              String   @id @default(uuid())
+  guestSearchId   String
+  photoId         String
+  similarityScore Float
+
+  guestSearch     GuestSearch @relation(fields: [guestSearchId], references: [id], onDelete: Cascade)
+  photo           Photo       @relation(fields: [photoId], references: [id], onDelete: Cascade)
+}
+
+model ClientApprovalLog {
+  id        String   @id @default(uuid())
+  clientId  String
+  action    String
+  notes     String?
+  adminId   String
+  createdAt DateTime @default(now())
+}
