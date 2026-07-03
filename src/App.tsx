@@ -481,36 +481,16 @@ function SubscriptionPage() {
           text="Choose a plan for instant dashboard access! If you prefer a manual setup without paying, admin approval is required."
         />
 
-        <div className="mt-8 grid gap-5 lg:grid-cols-3">
-          <PricingCard
-            icon={<Icons.CalendarDays size={22} aria-hidden="true" />}
-            name="Monthly"
-            amount={3000}
-            original="₹3,000 / month"
-            price="₹3,000 / month"
-            badge="Standard"
-            description="Best for trial runs, seasonal photographers, and smaller event teams."
-            features={['Unlimited events in demo UI', 'QR guest links', 'Client dashboard', 'Instant dashboard access']}
-          />
-          <PricingCard
-            icon={<Icons.Clock3 size={22} aria-hidden="true" />}
-            name="Quarterly"
-            amount={7500}
-            original="₹9,000 / 3 months"
-            price="₹7,500 / 3 months"
-            badge="Save 15%"
-            description="Great for photographers entering peak season needing reliable short-term access."
-            features={['Save ₹1,500 total', 'Priority support access', 'Custom event branding', 'Instant dashboard access']}
-          />
+        <div className="mt-8 grid gap-5 lg:grid-cols-1 max-w-sm mx-auto">
           <PricingCard
             icon={<Icons.BadgePercent size={22} aria-hidden="true" />}
             name="Yearly"
-            amount={15000}
-            original="₹30,000 / year"
-            price="₹15,000 / year"
+            amount={5000}
+            original="₹10,000 / year"
+            price="₹5,000 / year"
             badge="50% off"
             description="Best value for studios that manage weddings and recurring large events."
-            features={['Save ₹15,000 yearly', 'Priority onboarding', 'Storage and search analytics', 'Instant dashboard access']}
+            features={['Save ₹5,000 yearly', 'Priority onboarding', 'Storage and search analytics', 'Instant dashboard access']}
             highlighted
           />
         </div>
@@ -766,9 +746,7 @@ function RegisterPage() {
                 value={plan}
                 onChange={(event) => setPlan(event.target.value as PlanName)}
               >
-                <option value="Yearly">Yearly - ₹15,000</option>
-                <option value="Quarterly">Quarterly - ₹7,500</option>
-                <option value="Monthly">Monthly - ₹3,000</option>
+                <option value="Yearly">Yearly - ₹5,000</option>
               </select>
             </label>
           </div>
