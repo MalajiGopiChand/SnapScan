@@ -201,7 +201,8 @@ app.post('/api/events', requireClient, async (req, res) => {
   const { title, description, venue, city, state, country, eventDate } = req.body;
   try {
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
-    const guestLink = `http://localhost:5173/guest/${slug}`; // Replace with env variable in prod
+    const baseUrl = process.env.FRONTEND_URL || (process.env.VERCEL ? 'https://snapscan-pi.vercel.app' : 'http://localhost:5173');
+    const guestLink = `${baseUrl}/guest/${slug}`;
     const qrCodeDataUrl = await QRCode.toDataURL(guestLink);
     
     const event = await prisma.event.create({
@@ -506,6 +507,12 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+// Only start the server locally if not in a Vercel serverless environment
+if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+export default app;

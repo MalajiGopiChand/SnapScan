@@ -91,7 +91,7 @@ type AppState = {
   uploadPhotos: (token: string, id: string, formData: FormData) => Promise<void>
 }
 
-const API_URL = 'http://localhost:3001/api'
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:3001/api';
 
 export const useAppStore = create<AppState>((set, get) => ({
   authUser: null,
